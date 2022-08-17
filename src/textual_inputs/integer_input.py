@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import string
 from typing import TYPE_CHECKING, List, Optional, Tuple, Union
+from rich.align import AlignMethod
 
 import rich.box
 from rich.panel import Panel
@@ -86,6 +87,7 @@ class IntegerInput(Widget):
         title: str = "",
         step: int = 1,
         width: Optional[int] = None,
+        title_align: AlignMethod = "center",
     ) -> None:
         super().__init__(name)
         self.value = value
@@ -96,6 +98,7 @@ class IntegerInput(Widget):
         self._on_focus_message_class = InputOnFocus
         self._cursor_position = len(str(self.value))
         self._width = width
+        self._title_align = title_align
 
     def __rich_repr__(self):
         yield "name", self.name
@@ -191,7 +194,7 @@ class IntegerInput(Widget):
         return Panel(
             text,
             title=title,
-            title_align="left",
+            title_align=self._title_align,
             height=3,
             style=self.style or "",
             border_style=self.border_style or Style(color="blue"),
