@@ -85,6 +85,7 @@ class IntegerInput(Widget):
         placeholder: Union[str, int] = "",
         title: str = "",
         step: int = 1,
+        width: Optional[int] = None,
     ) -> None:
         super().__init__(name)
         self.value = value
@@ -94,6 +95,7 @@ class IntegerInput(Widget):
         self._on_change_message_class = InputOnChange
         self._on_focus_message_class = InputOnFocus
         self._cursor_position = len(str(self.value))
+        self._width = width
 
     def __rich_repr__(self):
         yield "name", self.name
@@ -101,6 +103,7 @@ class IntegerInput(Widget):
         yield "value", self.value
         yield "on_change_handler_name", self.on_change_handler_name
         yield "on_focus_handler_name", self.on_focus_handler_name
+        yield "width", self._width
 
     @property
     def has_focus(self) -> bool:
@@ -143,6 +146,15 @@ class IntegerInput(Widget):
             self.value = 0
         self.value += increment
 
+    @property
+    def width(self) -> Optional[int]:
+        """Width of the panel containing the IntegerInput"""
+        return self._width
+
+    @width.setter
+    def width(self, width: Optional[int]) -> None:
+        self._width = width
+
     def render(self) -> RenderableType:
         """
         Produce a Panel object containing placeholder text or value
@@ -184,6 +196,7 @@ class IntegerInput(Widget):
             style=self.style or "",
             border_style=self.border_style or Style(color="blue"),
             box=rich.box.DOUBLE if self.has_focus else rich.box.SQUARE,
+            width=self._width,
         )
 
     def _render_text_with_cursor(self) -> List[Union[str, Tuple[str, Style]]]:
