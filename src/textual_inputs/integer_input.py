@@ -9,7 +9,7 @@ from rich.align import AlignMethod
 
 import rich.box
 from rich.panel import Panel
-from rich.style import Style
+from rich.style import Style, StyleType
 from rich.text import Text
 from textual import events
 from textual.reactive import Reactive
@@ -88,6 +88,7 @@ class IntegerInput(Widget):
         step: int = 1,
         width: Optional[int] = None,
         title_align: AlignMethod = "center",
+        style: str | None = "blue",
     ) -> None:
         super().__init__(name)
         self.value = value
@@ -99,6 +100,7 @@ class IntegerInput(Widget):
         self._cursor_position = len(str(self.value))
         self._width = width
         self._title_align = title_align
+        self.style = style
 
     def __rich_repr__(self):
         yield "name", self.name
